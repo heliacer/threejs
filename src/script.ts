@@ -11,6 +11,28 @@ const sizes = {
 }
 
 
+window.addEventListener('resize', () => {
+  // Update sizes
+  sizes.width = window.innerWidth
+  sizes.height = window.innerHeight
+
+  // Update camera
+  camera.aspect = sizes.width / sizes.height
+  camera.updateProjectionMatrix()
+
+  // Update renderer
+  renderer.setSize(sizes.width, sizes.height)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+})
+
+window.addEventListener('dblclick', () => {
+  if (!document.fullscreenElement) {
+    canvas.requestFullscreen()
+  } else {
+    document.exitFullscreen()
+  }
+})
+
 // Focus
 window.addEventListener('keydown', (event) => {
   if (event.key === 'c') {
@@ -55,18 +77,23 @@ const positions = [
   [-10, 0, 0], [0, -10, 0], [0, 0, -10]
 ]
 
+const rootObject = new Group()
+
 positions.forEach(([x, y, z]) => {
   const model = createModel()
   model.position.set(x, y, z)
   models.push(model)
-  scene.add(model)
+  rootObject.add(model)
 })
+
+scene.add(rootObject)
 
 // Camera
 const camera = new PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.z = 20
 camera.lookAt(models[0].position)
 scene.add(camera)
+
 
 // Controls
 
@@ -78,6 +105,7 @@ const renderer = new WebGLRenderer({
   canvas: canvas
 })
 renderer.setSize(sizes.width, sizes.height)
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 // Animate
 const clock = new Clock()
@@ -88,6 +116,9 @@ const tick = () => {
   models.forEach((model) => {
     model.rotation.y = elapsedTime
   })
+
+  rootObject.rotation.z = -elapsedTime / 2
+  rootObject.rotation.y = -elapsedTime / 2
 
   // Render
   controls.update()
