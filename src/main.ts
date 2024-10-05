@@ -1,7 +1,8 @@
-import { Clock, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
+import { Clock, Object3D, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { handleWindowResize, handleFullScreen, handleFocus } from './events'
-import { createModels } from './models'
+import { createCrossGroup } from './models/cross'
+import simpleBox from './models/box'
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl') as HTMLElement
@@ -16,13 +17,20 @@ const sizes = {
 const scene = new Scene()
 
 // Models
-const { rootObject, models } = createModels()
-scene.add(rootObject)
+const models: { [key: string]: Object3D } = {}
+
+models.simpleBox = simpleBox
+models.crossCollection = createCrossGroup()
+
+Object.values(models).forEach((model, index) => {
+  model.position.x += index * 30
+  scene.add(model)
+})
 
 // Camera
 const camera = new PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.z = 20
-camera.lookAt(models[0].position)
+camera.position.set(0, 5, 10)
+camera.lookAt(models.simpleBox.position)
 scene.add(camera)
 
 // Renderer
@@ -43,12 +51,12 @@ const clock = new Clock()
 const tick = () => {
   const elapsedTime = clock.getElapsedTime()
 
-  models.forEach((model) => {
+  models.crossCollection.children.forEach((model) => {
     model.rotation.y = elapsedTime
   })
 
-  rootObject.rotation.z = -elapsedTime / 2
-  rootObject.rotation.y = -elapsedTime / 2
+  models.crossCollection.rotation.z = -elapsedTime / 2
+  models.crossCollection.rotation.y = -elapsedTime / 2
 
   // Render
   controls.update()
@@ -63,4 +71,4 @@ tick()
 // Events
 handleWindowResize(camera, renderer, sizes)
 handleFullScreen(canvas)
-handleFocus(controls, models)
+handleFocus(controls, models.simpleBox)
