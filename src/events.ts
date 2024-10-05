@@ -24,11 +24,11 @@ export const handleFullScreen = (canvas: HTMLElement) => {
   })
 }
 
-export const handleFocus = (controls: OrbitControls, model: Object3D) => {
+export const handleFocus = (controls: OrbitControls, models: Object3D[]) => {
   window.addEventListener('keydown', (event) => {
     if (event.key === 'f') {
       controls.reset()
-      controls.target.copy(model.position)
+      controls.target.copy(models[0].position)
       controls.update()
     }
   })

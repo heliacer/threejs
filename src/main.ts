@@ -1,8 +1,7 @@
 import { Clock, Object3D, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { handleWindowResize, handleFullScreen, handleFocus } from './events'
-import { createCrossGroup } from './models/cross'
-import simpleBox from './models/box'
+import { addModels } from './addModels'
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl') as HTMLElement
@@ -16,20 +15,19 @@ const sizes = {
 // Scene
 const scene = new Scene()
 
-// Models
+// Add Models
 const models: { [key: string]: Object3D } = {}
-
-models.simpleBox = simpleBox
-models.crossCollection = createCrossGroup()
+addModels(models)
 
 Object.values(models).forEach((model, index) => {
-  model.position.x += index * 30
+  model.position.x += index * 10
+  console.log(model.clone())
   scene.add(model)
 })
 
 // Camera
 const camera = new PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(0, 5, 10)
+camera.position.set(0, 3, 5)
 camera.lookAt(models.simpleBox.position)
 scene.add(camera)
 
@@ -71,4 +69,4 @@ tick()
 // Events
 handleWindowResize(camera, renderer, sizes)
 handleFullScreen(canvas)
-handleFocus(controls, models.simpleBox)
+handleFocus(controls, Object.values(models))
