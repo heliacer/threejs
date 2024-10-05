@@ -15,18 +15,20 @@ export const handleWindowResize = (camera: PerspectiveCamera, renderer: WebGLRen
 }
 
 export const handleFullScreen = (canvas: HTMLElement) => {
-  window.addEventListener('dblclick', () => {
-    if (!document.fullscreenElement) {
-      canvas.requestFullscreen()
-    } else {
-      document.exitFullscreen()
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'f') {
+      if (!document.fullscreenElement) {
+        canvas.requestFullscreen()
+      } else {
+        document.exitFullscreen()
+      }
     }
   })
 }
 
 export const handleFocus = (controls: OrbitControls, models: Object3D[]) => {
   window.addEventListener('keydown', (event) => {
-    if (event.key === 'f') {
+    if (event.key === 'c') {
       controls.reset()
       controls.target.copy(models[0].position)
       controls.update()

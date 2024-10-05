@@ -20,7 +20,7 @@ const models: { [key: string]: Object3D } = {}
 addModels(models)
 
 Object.values(models).forEach((model, index) => {
-  model.position.x += index * 10
+  model.position.x += index * 15
   console.log(model.clone())
   scene.add(model)
 })

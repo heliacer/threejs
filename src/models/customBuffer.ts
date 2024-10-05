@@ -9,9 +9,9 @@ import { BufferAttribute, BufferGeometry, Mesh, MeshBasicMaterial } from "three"
 */
 
 const positionsArray = new Float32Array([
-  0, 0, 0,
-  0, 1, 0,
-  1, 0, 0
+  0, 0, 1,
+  0, 1, 1,
+  1, 0, 0,
 ])
 
 const positionsAttribute = new BufferAttribute(positionsArray, 3)

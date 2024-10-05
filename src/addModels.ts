@@ -8,7 +8,7 @@ export const addModels = (models: { [key: string]: Object3D }) => {
   // Models
 
   models.randomMesh = randomMesh
-  models.customMesh = customMesh
   models.simpleBox = simpleBox
+  models.customMesh = customMesh
   models.crossCollection = createCrossGroup()
 }
