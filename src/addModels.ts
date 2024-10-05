@@ -7,8 +7,8 @@ import randomMesh from "./models/randomBuffer";
 export const addModels = (models: { [key: string]: Object3D }) => {
   // Models
 
-  models.randomMesh = randomMesh
   models.simpleBox = simpleBox
+  models.randomMesh = randomMesh
   models.customMesh = customMesh
   models.crossCollection = createCrossGroup()
 }
